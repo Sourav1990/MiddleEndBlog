@@ -110,22 +110,24 @@ public class TFriendController {
 			return true;
 	}
 
-	@RequestMapping(value = "/unFriend/{friendID}", method = RequestMethod.PUT)
-	public ResponseEntity<Friend> unFriend(@PathVariable("friendID") String friendID) {
-		logger.debug("->->->->calling method unFriend");
-		friendDAO.unFriend((String) httpSession.getAttribute("loggedInUserID"),friendID);
-		updateRequest(friendID, "U");
+	@RequestMapping(value = "/unFriend/{userID}", method = RequestMethod.PUT)
+	public ResponseEntity<Friend> unFriend(@PathVariable("userID") String userID) {
+		logger.debug("->->->->calling method unFriend"+userID);
+		String loggedInUserID = (String) httpSession.getAttribute("loggedInUserID");
+		logger.debug("->->->->calling method unFriend"+loggedInUserID);
+		friendDAO.unFriend(loggedInUserID,userID);
+		//updateRequest(friendID, "U");
 		logger.debug("->->->->setting status as U");
 		logger.debug("->->->->Deleting the record");
 		return new ResponseEntity<Friend>(friend, HttpStatus.OK);
 
 	}
 
-	@RequestMapping(value = "/rejectFriend/{friendID}", method = RequestMethod.PUT)
-	public ResponseEntity<Friend> rejectFriendFriendRequest(@PathVariable("friendID") String friendID) {
+	@RequestMapping(value = "/rejectFriend/{userID}", method = RequestMethod.PUT)
+	public ResponseEntity<Friend> rejectFriendFriendRequest(@PathVariable("userID") String userID) {
 		logger.debug("->->->->calling method rejectFriendFriendRequest");
 
-		updateRequest(friendID, "R");
+		updateRequest(userID, "R");
 		return new ResponseEntity<Friend>(friend, HttpStatus.OK);
 
 	}
