@@ -1,0 +1,9 @@
+com\niit\blogmiddleend\config\WebAppInitializer.class
+com\niit\blogmiddleend\config\WebConfig.class
+com\niit\blogmiddleend\config\AppConfig.class
+com\niit\blogmiddleend\config\WebSocketConfig.class
+com\niit\blogmiddleend\controller\TBlogController.class
+com\niit\blogmiddleend\controller\TUserController.class
+com\niit\blogmiddleend\controller\TJobController.class
+com\niit\blogmiddleend\controller\TFriendController.class
+com\niit\blogmiddleend\controller\ChatController.class

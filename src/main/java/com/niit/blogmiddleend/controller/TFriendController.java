@@ -60,7 +60,7 @@ public class TFriendController {
 		if (myFriends.isEmpty()) {
 			logger.debug("Friends does not exist for the user : " + loggedInUserID);
 			friend.setErrorCode("404");
-			friend.setErrorMessage("You does not have any friends");
+			friend.setErrorMessage("You do not have any friends");
 			myFriends.add(friend);
 		}
 		logger.debug("Send the friend list ");
@@ -181,6 +181,7 @@ public class TFriendController {
 		return new ResponseEntity<List<Friend>>(myFriendRequests, HttpStatus.OK);
 
 	}
+	
 	
 	
 	@RequestMapping("/getRequestsSendByMe")

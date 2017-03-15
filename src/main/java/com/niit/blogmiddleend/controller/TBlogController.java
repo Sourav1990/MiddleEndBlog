@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.niit.blogbackend.dao.BlogDAO;
 import com.niit.blogbackend.model.Blog;
+import com.niit.blogbackend.model.Friend;
 
 @RestController
 public class TBlogController {
@@ -57,23 +58,23 @@ public class TBlogController {
 		// ResponseEntity<List<Blog>>
 	}
 
-	@GetMapping("/blog/{id}")
-	public Blog getBlog(@PathVariable("id") int id) {
-		logger.debug("**************calling method getBlogs with the id " + id);
-		Blog blog = blogDAO.getBlog(id);
-		if (blog == null) {
-			blog = new Blog();
-			blog.setErrorCode("404");
-			blog.setErrorMessage("Blog not found with the id:" + id);
-		}
+	@GetMapping("/blogger/{userID}")
+	public  List<Blog> getmyBlogs(@PathVariable("userID") String userID) {
+		logger.debug("**************calling method getBlogs with the id " + userID);
+		String loggedInUserID = (String) session.getAttribute("loggedInUserID");
+		List<Blog> myblogs=blogDAO.getmyBlogs(userID);
+		if (myblogs == null)
 
-		return blog;
-		/*
-		 * if (blog == null) { return new
-		 * ResponseEntity<Blog>(HttpStatus.NOT_FOUND); }
-		 * 
-		 * return new ResponseEntity<Blog>(blog, HttpStatus.OK);
-		 */
+		{
+			blog = new Blog();
+
+			blog.setErrorCode("404");
+			blog.setErrorMessage("No blogs are available of yours");
+			myblogs.add(blog);
+
+		}
+		logger.debug("Send the Blog list ");
+		return myblogs;
 	}
 
 	@PostMapping(value = "/blog")
@@ -101,12 +102,29 @@ public class TBlogController {
 		}
 
 	}
+	@GetMapping("/blog/{id}")
+	public Blog getBlog(@PathVariable("id") int id) {
+		logger.debug("**************calling method blog by id with the id " + id);
+		Blog blog = blogDAO.get(id);
+		if(blog==null)
+		{
+			blog = new Blog();
+			blog.setErrorCode("404");
+			blog.setErrorMessage("Blog not found with the id:" + id);
+		}
+		
+		return blog;
+		/*if (blog == null) {
+			return new ResponseEntity<Blog>(HttpStatus.NOT_FOUND);
+		}
 
+		return new ResponseEntity<Blog>(blog, HttpStatus.OK);*/
+	}
 	@PutMapping("/blog/{id}")
 	public ResponseEntity<Blog> updateBlog(@PathVariable int id, @RequestBody Blog blog) {
 		logger.debug("calling method updateBlog with the id " + id);
 
-		if (blogDAO.getBlog(id) == null) {
+		if (blogDAO.get(id) == null) {
 			return new ResponseEntity<Blog>(HttpStatus.NOT_FOUND);
 		}
 		blogDAO.update(blog);
@@ -141,7 +159,7 @@ public class TBlogController {
 			return blog;
 		}
 		
-		blog =  blogDAO.getBlog(blogID);
+		blog =  blogDAO.get(blogID);
 		
 		if(blog==null)
 		{
