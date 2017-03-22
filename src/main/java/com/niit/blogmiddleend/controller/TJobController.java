@@ -55,6 +55,13 @@ public class TJobController {
 		List<Job> jobs = jobDAO.getAllOpenedJobs();
 		return new ResponseEntity<List<Job>>(jobs, HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/getAllNewJobs/", method = RequestMethod.GET) // $http.get(base_url+"/getAllJobs/)
+	public ResponseEntity<List<JobApplication>> getAllNewAppliedJobs() {
+		logger.debug("Starting of the method getAllNewAppliedJobs");
+		List<JobApplication> jobs = jobDAO.getAllNewAppliedJobs();
+		return new ResponseEntity<List<JobApplication>>(jobs, HttpStatus.OK);
+	}
 
 	@RequestMapping(value = "/getMyAppliedJobs/", method = RequestMethod.GET)
 

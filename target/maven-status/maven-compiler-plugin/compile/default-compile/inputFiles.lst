@@ -6,4 +6,6 @@ D:\BlogMiddleEnd\src\main\java\com\niit\blogmiddleend\config\AppConfig.java
 D:\BlogMiddleEnd\src\main\java\com\niit\blogmiddleend\controller\TJobController.java
 D:\BlogMiddleEnd\src\main\java\com\niit\blogmiddleend\controller\ChatController.java
 D:\BlogMiddleEnd\src\main\java\com\niit\blogmiddleend\controller\TBlogController.java
+D:\BlogMiddleEnd\src\main\java\com\niit\blogmiddleend\controller\JerseyService.java
+D:\BlogMiddleEnd\src\main\java\com\niit\blogmiddleend\config\FileUpload.java
 D:\BlogMiddleEnd\src\main\java\com\niit\blogmiddleend\controller\TFriendController.java

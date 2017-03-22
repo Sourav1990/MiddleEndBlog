@@ -92,6 +92,7 @@ public class TUserController {
 			logger.debug("invalid credentials");
 		} else {
 			user.setIs_online('Y');
+			userDAO.update(user);
 			user.setErrorCode("200");
 			user.setErrorMessage("You are successfully logged in....");
 			session.setAttribute("loggedInUserID", user.getId());
@@ -169,19 +170,14 @@ public class TUserController {
 		return new ResponseEntity<List<User>>(users, HttpStatus.OK);
 	}
 	@GetMapping("/tLogout")
-	public User logout()
+	public void logout()
 	{
-		logger.debug("->->->->calling method logout");
-		String loggedInUserID = (String) session.getAttribute("loggedInUserID");
-		//friendDAO.setOffLine(loggedInUserID);
-		//userDAO.setOffLine(loggedInUserID);
-		
-		user.setErrorCode("200");
-		user.setErrorMessage("You have successfully logged out");
+		String loggedInUserID=(String) session.getAttribute("loggedInUserID");
+		user=userDAO.getById(loggedInUserID);
+		user.setIs_online('N');
+		userDAO.update(user);
 		session.invalidate();
-		logger.debug("->->->->->-> setting offline status to user");
-		return user;
-		
+	
 	}
 	private User updateStatus(String id, char status, String reason) {
 		logger.debug("Starting of the method updateStatus");

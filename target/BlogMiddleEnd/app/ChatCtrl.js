@@ -1,4 +1,4 @@
-angular.module("chatApp.controllers").controller("ChatCtrl", function($scope, ChatService) {
+app.controller("ChatCtrl", function($scope, ChatService) {
   $scope.messages = [];
   $scope.message = "";
   $scope.max = 140;

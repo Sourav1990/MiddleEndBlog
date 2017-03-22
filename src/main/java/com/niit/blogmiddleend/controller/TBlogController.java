@@ -57,6 +57,28 @@ public class TBlogController {
 		// How it is returning JSONArray without proper return type i.e.,
 		// ResponseEntity<List<Blog>>
 	}
+	
+	@GetMapping("/getnewblogs")
+	public List<Blog> getNewBlogs() {
+		logger.debug("calling method New getBlogs");
+
+		List blogs = blogDAO.getAllNewBlogs();
+
+		if (blogs == null)
+
+		{
+			blog = new Blog();
+
+			blog.setErrorCode("404");
+			blog.setErrorMessage("No blogs are available");
+			blogs.add(blog);
+
+		}
+		return blogs;
+
+		// How it is returning JSONArray without proper return type i.e.,
+		// ResponseEntity<List<Blog>>
+	}
 
 	@GetMapping("/blogger/{userID}")
 	public  List<Blog> getmyBlogs(@PathVariable("userID") String userID) {
@@ -131,8 +153,8 @@ public class TBlogController {
 		return new ResponseEntity<Blog>(blog, HttpStatus.OK);
 	}
 
-	@PutMapping("/tApproveBlog/{blogID}")
-	public Blog approveBlog(@PathVariable("blogID") Integer blogID)
+	@PutMapping("/tApproveBlog/{id}")
+	public Blog approveBlog(@PathVariable("id") int id)
 	
 	{
 	   //get the blog based on blogID
@@ -159,12 +181,12 @@ public class TBlogController {
 			return blog;
 		}
 		
-		blog =  blogDAO.get(blogID);
+		blog =  blogDAO.get(id);
 		
 		if(blog==null)
 		{
 			blog = new Blog();
-			blog.setErrorMessage("No blog exist with this id : " + blogID);
+			blog.setErrorMessage("No blog exist with this id : " + id);
 			blog.setErrorCode("404");
 			return blog;
 			
@@ -172,7 +194,7 @@ public class TBlogController {
 		
 		if(blog.getStatus().equals('A'))
 		{
-			blog.setErrorMessage("This blog is already approved : " + blogID);
+			blog.setErrorMessage("This blog is already approved : " + id);
 			blog.setErrorCode("404");
 			return blog;
 		}
@@ -184,6 +206,70 @@ public class TBlogController {
 		{
 			blog.setErrorCode("200");
 			blog.setErrorMessage("Successfully approved");
+			
+		}
+		else
+		{
+			blog.setErrorCode("404");
+			blog.setErrorMessage("Not able to approve the blog");
+		}
+		
+		return blog;
+		
+}
+	@PutMapping("/tRejectBlog/{id}/{reason}")
+	public Blog rejectBlog(@PathVariable("id") int id)
+	
+	{
+	   //get the blog based on blogID
+		//If the blog does not exist -> cannot approve
+		//If the blog is already approved -> can no tapprove again
+		//set the statys as "A"
+		//call update method
+		
+		//Check whether the user is logged or not
+		
+		//Check the user is admin or not
+		
+		if (session.getAttribute("loggedInUserID") == null)
+		{
+			blog.setErrorMessage("Please login to approve the blog");
+			blog.setErrorCode("404");
+			return blog;
+		}
+		
+		if (! session.getAttribute("loggedInUserRole").equals("ROLE_ADMIN"))
+		{
+			blog.setErrorMessage("You are not authorized to approve the blog");
+			blog.setErrorCode("404");
+			return blog;
+		}
+		
+		blog =  blogDAO.get(id);
+		
+		if(blog==null)
+		{
+			blog = new Blog();
+			blog.setErrorMessage("No blog exist with this id : " + id);
+			blog.setErrorCode("404");
+			return blog;
+			
+		}
+		
+		if(blog.getStatus().equals('R'))
+		{
+			blog.setErrorMessage("This blog is already approved : " + id);
+			blog.setErrorCode("404");
+			return blog;
+		}
+		
+		
+		blog.setStatus("R");
+		
+		if( blogDAO.update(blog))
+		{
+			blog.setErrorCode("200");
+			blog.setErrorMessage("Successfully rejected");
 			
 		}
 		else
